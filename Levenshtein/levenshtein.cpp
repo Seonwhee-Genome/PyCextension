@@ -7,7 +7,7 @@ int minimum(int x, int y, int z){
 }
 
 
-int levenshtein(string s1, string s2)
+int levenshtein(wstring s1, wstring s2)
 {
     int m = s1.length();
     int n = s2.length();
@@ -49,8 +49,8 @@ int levenshtein(string s1, string s2)
 int main()
 {
     
-    string str1 = "Sunday";
-    string str2 = "Saturday";
+    wstring str1 = L"메론";
+    wstring str2 = L"수암숲속목장";
     cout << levenshtein(str1, str2);
     return 0;
 }
