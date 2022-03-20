@@ -11,7 +11,7 @@ int levenshtein(wstring s1, wstring s2)
 {
     int m = s1.length();
     int n = s2.length();
-    int row[100][100];
+    int row[n+1][m+1];
     int i;
     int j;
     int cost;
