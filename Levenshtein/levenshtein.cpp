@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "levenshtein.h"
 
 using namespace std;
 
@@ -9,27 +10,33 @@ int minimum(int x, int y, int z){
 
 int levenshtein(wstring s1, wstring s2)
 {
-    int m = s1.length();
-    int n = s2.length();
-    int row[n+1][m+1];
-    int i;
-    int j;
-    int cost;
+    const int m = s1.length();
+    const int n = s2.length();
 
     if (m < n)
         return levenshtein(s2, s1);
+
+    
+    int **row = new int *[n+1];
+    
+    
+    for (int i = 0; i <= n; i++)
+        row[i] = new int[m+1];
+    
+    int cost;
+    int ed;    
     
     if (n == 0)
         return m;
     
-    for (i = 0; i <= m; i++)
+    for (int i = 0; i <= m; i++)
         row[0][i] = i;
     
-    for (j = 0; j <= n; j++)
+    for (int j = 0; j <= n; j++)
         row[j][0] = j;
     
-    for (i = 1; i <= m; i++) {
-        for (j = 1; j <=n; j++)
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <=n; j++)
         {
             if (s1[i-1] == s2[j-1]) {
                 cost = 0;
@@ -42,9 +49,14 @@ int levenshtein(wstring s1, wstring s2)
                                 (row[j-1][i-1] + cost));
         }
     }
-    return row[n][m];
-}
+    ed = row[n][m];
+    
+    for (int i = 0; i <= n; i++)
+        delete[] row[i];
+    delete[] row;
 
+    return ed;
+}
 
 int main()
 {
