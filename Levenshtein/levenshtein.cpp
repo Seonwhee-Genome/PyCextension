@@ -16,47 +16,58 @@ int levenshtein(wstring s1, wstring s2)
     if (m < n)
         return levenshtein(s2, s1);
 
-    
-    int **row = new int *[n+1];
-    
-    
-    for (int i = 0; i <= n; i++)
-        row[i] = new int[m+1];
+
+    vector<int> previous_row(n+1);
+    vector<int> current_row;
     
     int cost;
     int ed;    
     
     if (n == 0)
         return m;
-    
-    for (int i = 0; i <= m; i++)
-        row[0][i] = i;
-    
+
     for (int j = 0; j <= n; j++)
-        row[j][0] = j;
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <=n; j++)
-        {
-            if (s1[i-1] == s2[j-1]) {
+        previous_row[j] = j;
+
+    for (int i = 0; i < m; i++)
+    {        
+        current_row.clear();
+        current_row.push_back(i+1);
+        for (int j = 0; j < n; j++)
+        {            
+            // get_cost
+            if (s1[i] == s2[j]){
                 cost = 0;
             }
             else {
                 cost = 1;
             }
-            row[j][i] = minimum( (row[j-1][i] + 1),
-                                (row[j][i-1] + 1),
-                                (row[j-1][i-1] + cost));
-        }
+            
+            int *insertions = new int;
+            int *deletions = new int;
+            int *substitutions = new int;
+            int *min_ed = new int;
+
+            *insertions = previous_row[j+1] + 1;
+            *deletions = current_row[j] + 1;
+            *substitutions = previous_row[j] + cost;            
+            *min_ed = minimum(*insertions, *deletions, *substitutions);
+            current_row.push_back(*min_ed);
+
+            delete min_ed;
+            delete insertions;
+            delete deletions;
+            delete substitutions;            
+        }        
+        previous_row = current_row;
+        
     }
-    ed = row[n][m];
-    
-    for (int i = 0; i <= n; i++)
-        delete[] row[i];
-    delete[] row;
+
+    ed = previous_row.back();    
 
     return ed;
 }
+
 
 int main()
 {
